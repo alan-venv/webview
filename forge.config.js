@@ -12,7 +12,7 @@ module.exports = {
           description: 'Webview',
           productDescription: 'Simple web view built in Electron',
           maintainer: 'Alan',
-          homepage: 'https://github.com/alan-venv/electron-web-view',
+          homepage: 'https://github.com/alan-venv/web-view',
           icon: "./icon.png",
           categories: ["Development"]
         }

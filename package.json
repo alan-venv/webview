@@ -1,7 +1,7 @@
 {
-  "name": "ebview",
+  "name": "webview",
   "version": "1.0.0",
-  "description": "Electron web view",
+  "description": "Simple web view built in Electron",
   "main": "main.js",
   "scripts": {
     "start": "electron-forge start",
