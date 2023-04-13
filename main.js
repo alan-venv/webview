@@ -5,9 +5,10 @@ const createWindow = () => {
   const mainWindow = new BrowserWindow({
     width: 600, // 600
     height: 400, // 400
-    x: 1310, // Display width - app width - gap (1920-600-10=1310)
-    y: 10, // gap (10)
+    x: 5000, // Display width - app width - gap (1920-600-10=1310)
+    y: 0, // gap (10)
     frame: false,
+    fullscreenable: false,
     autoHideMenuBar: true,
     alwaysOnTop: true,
     icon: "./icon.png",
