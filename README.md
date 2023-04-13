@@ -18,3 +18,4 @@ npm run make
 * https://www.electronjs.org/
 * https://www.electronforge.io/
 * https://www.electronforge.io/config/makers/deb
+* TESTE
