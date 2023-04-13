@@ -1,16 +1,16 @@
-const { app, BrowserWindow } = require("electron");
 const path = require("path");
+const { app, BrowserWindow, Menu, MenuItem } = require("electron");
 
 const createWindow = () => {
   const mainWindow = new BrowserWindow({
-    width: 700,
-    height: 700,
-    x: 1900,
-    y: 0,
-	  frame: false,
+    width: 600, // 600
+    height: 400, // 400
+    x: 1310, // Display width - app width - gap (1920-600-10=1310)
+    y: 10, // gap (10)
+    frame: false,
     autoHideMenuBar: true,
     alwaysOnTop: true,
-    icon: "./tux.png",
+    icon: "./icon.png",
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
     },
@@ -21,16 +21,48 @@ const createWindow = () => {
     // "body::-webkit-scrollbar { display: none; } h1 { -webkit-app-region: drag;}"
   );
 
-  mainWindow.loadURL("http://localhost:5173");
+  mainWindow.loadFile("./index.html");
 
   mainWindow.webContents.on("did-finish-load", () => {
-    mainWindow.setTitle("");
+    mainWindow.setTitle("Webview");
   });
+
+  // MENU
+  let menu = new Menu()
+  let help = new MenuItem(
+    {
+      label: 'Help',
+      submenu: [
+        {
+          role: 'Navigate back',
+          accelerator: 'Ctrl+Z',
+          click: () => { mainWindow.webContents.goBack() }
+        },
+        {
+          role: 'Navigate forward',
+          accelerator: 'Ctrl+Y',
+          click: () => { mainWindow.webContents.goForward() }
+        },
+        {
+          role: 'Navigate to home',
+          accelerator: 'Ctrl+Space',
+          click: () => { mainWindow.loadFile("./index.html"); }
+        },
+        {
+          role: 'Close',
+          accelerator: 'Ctrl+E',
+          click: () => {
+            app.quit()
+          }
+        }
+      ]
+    }
+  )
+  menu.append(help)
+  Menu.setApplicationMenu(menu)
 };
 
-// app.on("page-title-updated", (e, x, n) => {
-//   e.preventDefault();
-// });
+
 
 app.whenReady().then(() => {
   createWindow();
@@ -38,6 +70,10 @@ app.whenReady().then(() => {
   app.on("activate", () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
   });
+});
+
+app.on("page-title-updated", (e, x, n) => {
+  e.preventDefault();
 });
 
 app.on("window-all-closed", () => {
