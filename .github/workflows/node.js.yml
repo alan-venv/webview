@@ -26,5 +26,5 @@ jobs:
     - name: Publish
       uses: ncipollo/release-action@v1
       with:
-        artifacts: "./out/make/deb/x64/*.deb"
+        artifacts: "/home/runner/work/webview/webview/out/make/*"
         tag: v1.0.${{ github.run_number }}
