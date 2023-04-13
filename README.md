@@ -15,6 +15,6 @@ npm ci
 npm run make
 ```
 ## References
-https://www.electronjs.org/
-https://www.electronforge.io/
-https://www.electronforge.io/config/makers/deb
+* https://www.electronjs.org/
+* https://www.electronforge.io/
+* https://www.electronforge.io/config/makers/deb
