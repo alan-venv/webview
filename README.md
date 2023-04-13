@@ -4,6 +4,12 @@
 * Node.js
 * Electron
 
+## Shortcuts
+* [Ctrl + Z]        Navigate back
+* [Ctrl + Y]        Navigate forward
+* [Ctrl + E]        Quit
+* [Ctrl + Space]    Navigate to home page
+
 ## How to run
 ```
 npm ci
