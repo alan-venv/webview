@@ -11,6 +11,7 @@ npm run start
 ```
 ## How to build
 ```
+npm ci
 npm run make
 ```
 ## References
