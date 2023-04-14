@@ -87,9 +87,10 @@
     input.addEventListener('keydown', function (event) {
       if (event.key === 'Enter') {
         const url = input.value;
-        if (url.includes('http://') || url.includes('https://')) {
+        if (url.includes('http://') || url.includes('https://') || url.includes('.html') || url.includes('.pdf')) {
           window.location.href = url;
-        } else {
+        }
+        else {
           window.location.href = "https://" + url;
         }
       }

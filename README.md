@@ -5,22 +5,20 @@
 * Electron
 
 ## Shortcuts
-* [Ctrl + Z]        Navigate back
-* [Ctrl + Y]        Navigate forward
-* [Ctrl + E]        Quit
-* [Ctrl + Space]    Navigate to home page
+* [ Ctrl + E ] &nbsp;&nbsp;&nbsp;&nbsp; Exit
+* [ Ctrl + Z ] &nbsp;&nbsp;&nbsp;&nbsp; Navigate back
+* [ Ctrl + Y ] &nbsp;&nbsp;&nbsp;&nbsp; Navigate forward
+* [ Ctrl + R ] &nbsp;&nbsp;&nbsp;&nbsp; Reload current page
+* [ Ctrl + H ] &nbsp;&nbsp;&nbsp;&nbsp; Navigate to home page
+
 
 ## How to run
 ```
-npm ci
 npm run start
 ```
-## How to build
+## How to pack
 ```
-npm ci
 npm run make
 ```
-## References
-* https://www.electronjs.org/
-* https://www.electronforge.io/
-* https://www.electronforge.io/config/makers/deb
+
+![Image](preview.png "icon")

@@ -45,8 +45,13 @@ const createWindow = () => {
           click: () => { mainWindow.webContents.goForward() }
         },
         {
+          role: 'Reload page',
+          accelerator: 'Ctrl+R',
+          click: () => { mainWindow.reload() }
+        },
+        {
           role: 'Navigate to home',
-          accelerator: 'Ctrl+Space',
+          accelerator: 'Ctrl+H',
           click: () => { mainWindow.loadFile("./index.html"); }
         },
         {
