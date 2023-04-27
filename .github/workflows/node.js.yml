@@ -21,7 +21,10 @@ jobs:
       - name: Debug
         run: |
           echo "$GITHUB_PATH"
-          candle
+          echo $GITHUB_PATH
+          echo "$GITHUB_ENV"
+          echo $GITHUB_ENV
+
       # - name: Setup node.js
       #   uses: actions/setup-node@v3
       #   with:
