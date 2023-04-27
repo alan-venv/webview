@@ -20,21 +20,25 @@ jobs:
       - name: Config path
         run: |
           echo "$GITHUB_WORKSPACE/wix" >> $GITHUB_PATH
-      - name: Setup node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: "20"
-      - name: Install dependencies
-        run: npm ci
-      - name: Make package
-        run: npm run make
-      - name: Upload artifact
-        uses: actions/upload-artifact@v3
-        with:
-          retention-days: 1
-          name: windows # Directory name
-          path: | # Files
-            ./out/make/*/x64/*.msi
+      - name: Debug
+        run: |
+          echo "$GITHUB_PATH"
+          ls ./wix
+      # - name: Setup node.js
+      #   uses: actions/setup-node@v3
+      #   with:
+      #     node-version: "20"
+      # - name: Install dependencies
+      #   run: npm ci
+      # - name: Make package
+      #   run: npm run make
+      # - name: Upload artifact
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     retention-days: 1
+      #     name: windows # Directory name
+      #     path: | # Files
+      #       ./out/make/*/x64/*.msi
 
 # jobs:
 #   build:
