@@ -13,12 +13,13 @@ jobs:
     steps:
       - name: Checkout sources
         uses: actions/checkout@v3
-      - name: Setup dotnet
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: "7"
-      - name: Install dependencies
-        run: dotnet tool install --global wix --version 4.0.0
+      - name: Download wix
+        run: curl -fsOL https://github.com/wixtoolset/wix3/releases/download/wix3112rtm/wix311-binaries.zip
+      - name: Extract wix
+        run: mkdir wix && tar -xf ./wix311-binaries.zip -C ./wix
+      - name: Config path
+        run: |
+          echo "$GITHUB_WORKSPACE/wix" >> $GITHUB_PATH
       - name: Setup node.js
         uses: actions/setup-node@v3
         with:
@@ -33,8 +34,7 @@ jobs:
           retention-days: 1
           name: windows # Directory name
           path: | # Files
-            ./out/make/*/x64/*[.exe,.msi]
-            !./out/make/*/x64/*[.nupkg]
+            ./out/make/*/x64/*.msi
 
 # jobs:
 #   build:
