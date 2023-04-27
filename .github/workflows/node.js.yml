@@ -17,30 +17,26 @@ jobs:
         run: |
           curl -fsOL https://github.com/wixtoolset/wix3/releases/download/wix3112rtm/wix311-binaries.zip
           mkdir wix && tar -xf ./wix311-binaries.zip -C ./wix
-      - name: Add to PATH
-        shell: pwsh
-        run: |
           echo "${pwd}/wix" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
-      - name: Debug
-        run: |
-          echo "${pwd}/wix"
-          candle
-
-      # - name: Setup node.js
-      #   uses: actions/setup-node@v3
-      #   with:
-      #     node-version: "20"
-      # - name: Install dependencies
-      #   run: npm ci
-      # - name: Make package
-      #   run: npm run make
-      # - name: Upload artifact
-      #   uses: actions/upload-artifact@v3
-      #   with:
-      #     retention-days: 1
-      #     name: windows # Directory name
-      #     path: | # Files
-      #       ./out/make/*/x64/*.msi
+      # - name: Add to PATH
+      #   shell: pwsh
+      #   run: echo "${pwd}/wix" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+      #  echo "${pwd}/wix" | Out-File -Append -FilePath $env:GITHUB_PATH -Encoding utf8
+      - name: Setup node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "20"
+      - name: Install dependencies
+        run: npm ci
+      - name: Make package
+        run: npm run make
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          retention-days: 1
+          name: windows # Directory name
+          path: | # Files
+            ./out/make/*/x64/*.msi
 
 # jobs:
 #   build:
