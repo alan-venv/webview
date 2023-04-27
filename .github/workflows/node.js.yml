@@ -31,13 +31,24 @@ jobs:
           prerelease: false
       - name: DEBUG
         run: ls && ls webview-linux && ls webview-windows
+      #
       - name: Upload artifacts to release
-        uses: actions/upload-release-asset@v1
+        uses: svenstaro/upload-release-action@v2
         with:
-          upload_url: ${{ steps.new-release.outputs.upload_url }}
-          asset_path: ./webview-linux/*
-          asset_name: webview-linux.zip
-          asset_content_type: application/zip
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: ./*
+          tag: v${{ github.run_number }}
+          overwrite: true
+          file_glob: true
+          body: "This is my release text"
+      #
+      # - name: Upload artifacts to release
+      #   uses: actions/upload-release-asset@v1
+      #   with:
+      #     upload_url: ${{ steps.new-release.outputs.upload_url }}
+      #     asset_path: ./webview-linux/*
+      #     asset_name: webview-linux.zip
+      #     asset_content_type: application/zip
 
   build_linux:
     runs-on: ubuntu-latest
@@ -55,12 +66,12 @@ jobs:
       - name: Make package
         run: npm run make
       - name: DEBUG
-        run: ls
+        run: ls && pwd
       - name: Publish
         uses: actions/upload-artifact@v3
         with:
           name: webview-linux
-          path: "/home/runner/work/webview/webview/out/make/deb/x64/*.deb"
+          path: "./out/make/deb/x64/*.deb"
 
   build_windows:
     runs-on: windows-latest
@@ -78,9 +89,9 @@ jobs:
       - name: Make package
         run: npm run make
       - name: DEBUG
-        run: ls
+        run: ls && pwd
       - name: Publish
         uses: actions/upload-artifact@v3
         with:
           name: webview-windows
-          path: "D:\\a\\webview\\webview\\out\\make\\squirrel.windows\\x64\\*.exe"
+          path: "./out/make/squirrel.windows/x64/*.exe"
