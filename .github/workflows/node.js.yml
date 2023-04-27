@@ -30,7 +30,7 @@ jobs:
           draft: false
           prerelease: false
       - name: DEBUG
-        run: ls && webview-linux
+        run: ls && ls webview-linux && ls webview-windows
       - name: Upload artifacts to release
         uses: actions/upload-release-asset@v1
         with:
@@ -54,6 +54,8 @@ jobs:
         run: npm ci
       - name: Make package
         run: npm run make
+      - name: DEBUG
+        run: ls
       - name: Publish
         uses: actions/upload-artifact@v3
         with:
@@ -75,6 +77,8 @@ jobs:
         run: npm ci
       - name: Make package
         run: npm run make
+      - name: DEBUG
+        run: ls
       - name: Publish
         uses: actions/upload-artifact@v3
         with:
