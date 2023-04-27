@@ -24,13 +24,11 @@ jobs:
         run: npm ci
       - name: Make package
         run: npm run make
-      - name: Get artifacts
-        run: mkdir artifacts && find . \( -name "*.deb" -o -name "*.exe" \) -type f -exec mv {} ./artifacts \;
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
           name: ${{ matrix.os }}
-          path: "./artifacts/*"
+          path: "./**/*[.exe,.deb]"
           retention-days: 1
 
   publish_release:
