@@ -21,10 +21,18 @@ module.exports = {
         },
       },
     },
+    // {
+    //   name: "@electron-forge/maker-squirrel",
+    //   platforms: ["win32"],
+    //   config: {},
+    // },
     {
-      name: "@electron-forge/maker-squirrel",
+      name: "@electron-forge/maker-wix",
       platforms: ["win32"],
-      config: {},
+      config: {
+        language: 1033,
+        manufacturer: "My Awesome Company",
+      },
     },
   ],
 };

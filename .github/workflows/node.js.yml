@@ -9,17 +9,19 @@ on:
 jobs:
   build:
     name: Build
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest]
-        node-version: [20]
-    runs-on: ${{ matrix.os }}
+    runs-on: windows-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: "7"
+      - name: Install dependencies
+        run: dotnet tool install --global wix --version 4.0.0
+      - name: Setup Node
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: "20"
       - name: Install dependencies
         run: npm ci
       - name: Make package
@@ -28,24 +30,51 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           retention-days: 1
-          name: ${{ matrix.os }}
+          name: windows
           path: |
-            ./out/make/*/x64/*[.exe,.deb]
+            ./out/make/*/x64/*[.exe,.msi]
             !./out/make/*/x64/*[.nupkg]
 
-  publish_release:
-    name: Publish to release
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Download artifacts
-        uses: actions/download-artifact@v3
-      - name: Rename linux artifact
-        run: find ./ -name "*.deb" -type f -exec mv {} ./webview-linux.deb \;
-      - name: Rename windows artifact
-        run: find ./ -name "*.exe" -type f -exec mv {} ./webview-windows-setup.exe \;
-      - name: Upload artifacts to release
-        uses: ncipollo/release-action@v1
-        with:
-          artifacts: "./*.deb, ./*.exe"
-          tag: v${{ github.run_number }}
+# jobs:
+#   build:
+#     name: Build
+#     strategy:
+#       matrix:
+#         os: [ubuntu-latest, windows-latest]
+#         node-version: [20]
+#     runs-on: ${{ matrix.os }}
+#     steps:
+#       - uses: actions/checkout@v3
+#       - name: Use Node.js ${{ matrix.node-version }}
+#         uses: actions/setup-node@v3
+#         with:
+#           node-version: ${{ matrix.node-version }}
+#       - name: Install dependencies
+#         run: npm ci
+#       - name: Make package
+#         run: npm run make
+#       - name: Upload artifact
+#         uses: actions/upload-artifact@v3
+#         with:
+#           retention-days: 1
+#           name: ${{ matrix.os }}
+#           path: |
+#             ./out/make/*/x64/*[.exe,.deb]
+#             !./out/make/*/x64/*[.nupkg]
+
+#   publish_release:
+#     name: Publish to release
+#     runs-on: ubuntu-latest
+#     needs: build
+#     steps:
+#       - name: Download artifacts
+#         uses: actions/download-artifact@v3
+#       - name: Rename linux artifact
+#         run: find ./ -name "*.deb" -type f -exec mv {} ./webview-linux.deb \;
+#       - name: Rename windows artifact
+#         run: find ./ -name "*.exe" -type f -exec mv {} ./webview-windows-setup.exe \;
+#       - name: Upload artifacts to release
+#         uses: ncipollo/release-action@v1
+#         with:
+#           artifacts: "./*.deb, ./*.exe"
+#           tag: v${{ github.run_number }}
