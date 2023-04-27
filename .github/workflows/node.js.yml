@@ -8,39 +8,41 @@ jobs:
   publish_release:
     runs-on: ubuntu-latest
     needs: [build_linux, build_windows]
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    # env:
+    #   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - name: Download artifacts
         uses: actions/download-artifact@v3
-        # with:
-        #   name: site-build
-      - name: Display structure of downloaded files
-        run: ls
-      - name: Create release
-        id: new-release
-        uses: actions/create-release@v1
-        with:
-          tag_name: v${{ github.run_number }}
-          release_name: Release ${{ github.run_number }}
-          body: |
-            Changes in this Release
-              - First Change
-              - Second Change
-          draft: false
-          prerelease: false
-      - name: DEBUG
-        run: ls && ls webview-linux && ls webview-windows
-      #
+      - name: Rename artifacts
+        run: mv ./*/*.deb ./webview-linux.deb && mv ./*/*.exe ./webview-windows.deb
       - name: Upload artifacts to release
-        uses: svenstaro/upload-release-action@v2
+        uses: ncipollo/release-action@v1
         with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: ./*
+          artifacts: "./*.deb, ./*.exe"
           tag: v${{ github.run_number }}
-          overwrite: true
-          file_glob: true
-          body: "This is my release text"
+
+      # - name: Create release
+      #   id: new-release
+      #   uses: actions/create-release@v1
+      #   with:
+      #     tag_name: v${{ github.run_number }}
+      #     release_name: Release ${{ github.run_number }}
+      #     body: |
+      #       Changes in this Release
+      #         - First Change
+      #         - Second Change
+      #     draft: false
+      #     prerelease: false
+      #
+      # - name: Upload artifacts to release
+      # uses: svenstaro/upload-release-action@v2
+      # with:
+      #   repo_token: ${{ secrets.GITHUB_TOKEN }}
+      #   file: ./*
+      #   tag: v${{ github.run_number }}
+      #   overwrite: true
+      #   file_glob: true
+      #   body: "This is my release text"
       #
       # - name: Upload artifacts to release
       #   uses: actions/upload-release-asset@v1
@@ -65,8 +67,6 @@ jobs:
         run: npm ci
       - name: Make package
         run: npm run make
-      - name: DEBUG
-        run: ls && pwd
       - name: Publish
         uses: actions/upload-artifact@v3
         with:
@@ -88,8 +88,6 @@ jobs:
         run: npm ci
       - name: Make package
         run: npm run make
-      - name: DEBUG
-        run: ls && pwd
       - name: Publish
         uses: actions/upload-artifact@v3
         with:
