@@ -33,7 +33,7 @@ jobs:
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ steps.new-release.outputs.upload_url }}
-          asset_path: ./webview-linux.zip
+          asset_path: ./webview-linux
           asset_name: webview-linux.zip
           asset_content_type: application/zip
 
@@ -74,7 +74,7 @@ jobs:
       - name: Make package
         run: npm run make
       - name: DEBUG
-        run: ls D:\a\webview\webview\out\make\squirrel.windows\
+        run: ls D:\a\webview\webview\out\make\squirrel.windows\x64\
       - name: Publish
         uses: actions/upload-artifact@v3
         with:
