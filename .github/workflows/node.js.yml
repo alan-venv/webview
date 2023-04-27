@@ -1,5 +1,3 @@
-name: CI/CD
-
 on:
   push:
     branches: "main"
@@ -7,21 +5,19 @@ on:
       - "README.md"
 
 jobs:
-  windows_build:
-    name: Windows build
-    runs-on: windows-latest
+  build:
+    name: Build
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        node-version: [20]
+    runs-on: ${{ matrix.os }}
     steps:
-      - name: Checkout sources
-        uses: actions/checkout@v3
-      - name: Wix config
-        run: |
-          curl -fsOL https://github.com/wixtoolset/wix3/releases/download/wix3112rtm/wix311-binaries.zip
-          mkdir wix && tar -xf ./wix311-binaries.zip -C ./wix
-          echo "${pwd}/wix" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
-      - name: Setup node.js
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
-          node-version: "20"
+          node-version: ${{ matrix.node-version }}
       - name: Install dependencies
         run: npm ci
       - name: Make package
@@ -30,68 +26,50 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           retention-days: 1
-          name: windows # Directory name
-          path: | # Files
-            ./out/make/*/x64/*.msi
+          name: ${{ matrix.os }}
+          path: |
+            ./out/make/*/x64/*[.exe,.deb]
+            !./out/make/*/x64/*[.nupkg]
 
   publish_release:
     name: Publish to release
     runs-on: ubuntu-latest
-    needs: windows_build
+    needs: build
     steps:
       - name: Download artifacts
         uses: actions/download-artifact@v3
-      # - name: Rename linux artifact
-      #   run: find ./ -name "*.deb" -type f -exec mv {} ./webview-linux.deb \;
-      # - name: Rename windows artifact
-      #   run: find ./ -name "*.exe" -type f -exec mv {} ./webview-windows-setup.exe \;
+      - name: Rename linux artifact
+        run: find ./ -name "*.deb" -type f -exec mv {} ./webview-linux.deb \;
       - name: Rename windows artifact
-        run: find ./ -name "*.msi" -type f -exec mv {} ./webview-window.msi \;
+        run: find ./ -name "*.exe" -type f -exec mv {} ./webview-windows-setup.exe \;
       - name: Upload artifacts to release
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "./*.deb, ./*.exe, ./*.msi"
+          artifacts: "./*.deb, ./*.exe"
           tag: v${{ github.run_number }}
-# jobs:
-#   build:
-#     name: Build
-#     strategy:
-#       matrix:
-#         os: [ubuntu-latest, windows-latest]
-#         node-version: [20]
-#     runs-on: ${{ matrix.os }}
-#     steps:
-#       - uses: actions/checkout@v3
-#       - name: Use Node.js ${{ matrix.node-version }}
-#         uses: actions/setup-node@v3
-#         with:
-#           node-version: ${{ matrix.node-version }}
-#       - name: Install dependencies
-#         run: npm ci
-#       - name: Make package
-#         run: npm run make
-#       - name: Upload artifact
-#         uses: actions/upload-artifact@v3
-#         with:
-#           retention-days: 1
-#           name: ${{ matrix.os }}
-#           path: |
-#             ./out/make/*/x64/*[.exe,.deb]
-#             !./out/make/*/x64/*[.nupkg]
 
-#   publish_release:
-#     name: Publish to release
-#     runs-on: ubuntu-latest
-#     needs: build
-#     steps:
-#       - name: Download artifacts
-#         uses: actions/download-artifact@v3
-#       - name: Rename linux artifact
-#         run: find ./ -name "*.deb" -type f -exec mv {} ./webview-linux.deb \;
-#       - name: Rename windows artifact
-#         run: find ./ -name "*.exe" -type f -exec mv {} ./webview-windows-setup.exe \;
-#       - name: Upload artifacts to release
-#         uses: ncipollo/release-action@v1
-#         with:
-#           artifacts: "./*.deb, ./*.exe"
-#           tag: v${{ github.run_number }}
+  # windows_build_msi:
+  #   name: Windows build
+  #   runs-on: windows-latest
+  #   steps:
+  #     - name: Checkout sources
+  #       uses: actions/checkout@v3
+  #     - name: Wix config
+  #       run: |
+  #         curl -fsOL https://github.com/wixtoolset/wix3/releases/download/wix3112rtm/wix311-binaries.zip
+  #         mkdir wix && tar -xf ./wix311-binaries.zip -C ./wix
+  #         echo "${pwd}/wix" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+  #     - name: Setup node.js
+  #       uses: actions/setup-node@v3
+  #       with:
+  #         node-version: "20"
+  #     - name: Install dependencies
+  #       run: npm ci
+  #     - name: Make package
+  #       run: npm run make
+  #     - name: Upload artifact
+  #       uses: actions/upload-artifact@v3
+  #       with:
+  #         retention-days: 1
+  #         name: windows
+  #         path: "./out/make/*/x64/*.msi"
