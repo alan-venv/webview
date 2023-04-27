@@ -3,20 +3,26 @@ module.exports = {
   rebuildConfig: {},
   makers: [
     {
-      name: '@electron-forge/maker-deb',
+      name: "@electron-forge/maker-deb",
+      platforms: ["linux"],
       config: {
         options: {
-          name: 'Webview',
-          productName: 'Webview',
-          genericName: 'Webview',
-          description: 'Webview',
-          productDescription: 'Simple webview built in Electron',
-          maintainer: 'Alan',
-          homepage: 'https://github.com/alan-venv/webview',
+          name: "Webview",
+          productName: "Webview",
+          genericName: "Webview",
+          description: "Webview",
+          productDescription: "Simple webview built in Electron",
+          maintainer: "dev-venv",
+          homepage: "https://github.com/dev-venv/webview",
           icon: "./icon.png",
-          categories: ["Development"]
-        }
+          categories: ["Development"],
+        },
       },
-    }
+    },
+    {
+      name: "@electron-forge/maker-squirrel",
+      platforms: ["windows"],
+      config: {},
+    },
   ],
 };

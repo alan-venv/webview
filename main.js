@@ -1,6 +1,8 @@
 const path = require("path");
 const { app, BrowserWindow, Menu, MenuItem } = require("electron");
 
+if (require("electron-squirrel-startup")) app.quit();
+
 const createWindow = () => {
   const mainWindow = new BrowserWindow({
     width: 600, // 600
@@ -29,46 +31,50 @@ const createWindow = () => {
   });
 
   // MENU
-  let menu = new Menu()
-  let help = new MenuItem(
-    {
-      label: 'Help',
-      submenu: [
-        {
-          role: 'Navigate back',
-          accelerator: 'Ctrl+Z',
-          click: () => { mainWindow.webContents.goBack() }
+  let menu = new Menu();
+  let help = new MenuItem({
+    label: "Help",
+    submenu: [
+      {
+        role: "Navigate back",
+        accelerator: "Ctrl+Z",
+        click: () => {
+          mainWindow.webContents.goBack();
         },
-        {
-          role: 'Navigate forward',
-          accelerator: 'Ctrl+Y',
-          click: () => { mainWindow.webContents.goForward() }
+      },
+      {
+        role: "Navigate forward",
+        accelerator: "Ctrl+Y",
+        click: () => {
+          mainWindow.webContents.goForward();
         },
-        {
-          role: 'Reload page',
-          accelerator: 'Ctrl+R',
-          click: () => { mainWindow.reload() }
+      },
+      {
+        role: "Reload page",
+        accelerator: "Ctrl+R",
+        click: () => {
+          mainWindow.reload();
         },
-        {
-          role: 'Navigate to home',
-          accelerator: 'Ctrl+H',
-          click: () => { mainWindow.loadFile("./index.html"); }
+      },
+      {
+        role: "Navigate to home",
+        accelerator: "Ctrl+H",
+        click: () => {
+          mainWindow.loadFile("./index.html");
         },
-        {
-          role: 'Close',
-          accelerator: 'Ctrl+E',
-          click: () => {
-            app.quit()
-          }
-        }
-      ]
-    }
-  )
-  menu.append(help)
-  Menu.setApplicationMenu(menu)
+      },
+      {
+        role: "Close",
+        accelerator: "Ctrl+E",
+        click: () => {
+          app.quit();
+        },
+      },
+    ],
+  });
+  menu.append(help);
+  Menu.setApplicationMenu(menu);
 };
-
-
 
 app.whenReady().then(() => {
   createWindow();

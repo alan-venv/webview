@@ -1,5 +1,6 @@
 {
   "name": "webview",
+  "author": "dev-venv",
   "version": "1.0.0",
   "description": "Simple webview built in Electron",
   "main": "main.js",
@@ -9,8 +10,7 @@
     "make": "electron-forge make"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "@electron-forge/cli": "^6.1.1",
     "@electron-forge/maker-deb": "^6.1.1",
