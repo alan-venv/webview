@@ -1,5 +1,3 @@
-name: Node.js CI
-
 on:
   push:
     branches: "main"
@@ -7,6 +5,40 @@ on:
       - "README.md"
 
 jobs:
+  publish_release:
+    runs-on: ubuntu-latest
+    needs: [build_linux, build_windows]
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v3
+        # with:
+        #   name: site-build
+      - name: Display structure of downloaded files
+        run: ls
+      - name: Create release
+        id: new-release
+        uses: actions/create-release@v1
+        with:
+          tag_name: v${{ github.run_number }}
+          release_name: Release ${{ github.run_number }}
+          body: |
+            Changes in this Release
+              - First Change
+              - Second Change
+          draft: false
+          prerelease: false
+      # - name: Upload artifacts to release
+      #   uses: actions/upload-release-asset@v1
+      #   # env:
+      #   #   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   with:
+      #     upload_url: ${{ steps.new-release.outputs.upload_url }}
+      #     asset_path: ./site.zip
+      #     asset_name: site-v${{ github.run_number }}.zip
+      #     asset_content_type: application/zip
+
   build_linux:
     runs-on: ubuntu-latest
     strategy:
@@ -40,6 +72,7 @@ jobs:
       - run: npm ci
       - run: npm run make
       - run: pwd
+      - run: ls D:\a\webview\webview\out\make\
       - name: Publish
         uses: actions/upload-artifact@v3
         with:
