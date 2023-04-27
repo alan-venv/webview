@@ -7,7 +7,7 @@ const createWindow = () => {
   const mainWindow = new BrowserWindow({
     width: 600, // 600
     height: 400, // 400
-    x: 9999, // Display width - app width - gap (1920-600-10=1310)
+    x: 0, // Display width - app width - gap (1920-600-10=1310)
     y: 0, // gap (10)
     frame: false,
     fullscreenable: false,
@@ -30,7 +30,6 @@ const createWindow = () => {
     mainWindow.setTitle("Webview");
   });
 
-  // MENU
   let menu = new Menu();
   let help = new MenuItem({
     label: "Help",

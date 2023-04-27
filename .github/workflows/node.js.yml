@@ -30,7 +30,7 @@ jobs:
           tag: v1.0.${{ github.run_number }}
 
   build-windows:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     strategy:
       matrix:
@@ -45,8 +45,4 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: npm ci
       - run: npm run make
-      - name: Publish
-        uses: ncipollo/release-action@v1
-        with:
-          artifacts: "/home/runner/work/webview/webview/out/make/deb/x64/*.deb"
-          tag: v1.0.${{ github.run_number }}
+      - run: pwd

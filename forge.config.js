@@ -1,5 +1,7 @@
 module.exports = {
-  packagerConfig: {},
+  packagerConfig: {
+    icon: "./icon",
+  },
   rebuildConfig: {},
   makers: [
     {
@@ -14,14 +16,14 @@ module.exports = {
           productDescription: "Simple webview built in Electron",
           maintainer: "dev-venv",
           homepage: "https://github.com/dev-venv/webview",
-          icon: "./icon.png",
+          icon: "./icon.ico",
           categories: ["Development"],
         },
       },
     },
     {
       name: "@electron-forge/maker-squirrel",
-      platforms: ["windows"],
+      platforms: ["win32"],
       config: {},
     },
   ],
