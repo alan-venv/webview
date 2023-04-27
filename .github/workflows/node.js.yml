@@ -24,11 +24,14 @@ jobs:
         run: npm ci
       - name: Make package
         run: npm run make
+      - name: Get artifacts
+        run: mkdir artifacts && find . \( -name "*.deb" -o -name "*.exe" \) -type f -exec mv {} ./artifacts \;
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
           name: ${{ matrix.os }}
-          path: "./out/make/*"
+          path: "./artifacts/*"
+          retention-days: 1
 
   publish_release:
     name: Publish to release
@@ -38,9 +41,9 @@ jobs:
       - name: Download artifacts
         uses: actions/download-artifact@v3
       - name: Rename linux artifact
-        run: mv `find ./ -name "*.deb"` ./webview-linux.deb
+        run: find ./ -name "*.deb" -type f -exec mv {} ./webview-linux.deb \;
       - name: Rename windows artifact
-        run: mv `find ./ -name "*.exe"` ./webview-windows.exe
+        run: find ./ -name "*.exe" -type f -exec mv {} ./webview-windows-setup.exe \;
       - name: Upload artifacts to release
         uses: ncipollo/release-action@v1
         with:
