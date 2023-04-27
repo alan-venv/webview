@@ -2,19 +2,16 @@ name: Node.js CI
 
 on:
   push:
+    branches: "main"
     paths-ignore:
       - "README.md"
-    branches: "main"
 
 jobs:
-  build-linux:
+  build_linux:
     runs-on: ubuntu-latest
-
     strategy:
       matrix:
         node-version: [19.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-
     steps:
       - uses: actions/checkout@v3
       - name: Use Node.js ${{ matrix.node-version }}
@@ -24,19 +21,16 @@ jobs:
       - run: npm ci
       - run: npm run make
       - name: Publish
-        uses: ncipollo/release-action@v1
+        uses: actions/upload-artifact@v3
         with:
-          artifacts: "/home/runner/work/webview/webview/out/make/deb/x64/*.deb"
-          tag: v1.0.${{ github.run_number }}
+          name: webview-linux
+          path: "/home/runner/work/webview/webview/out/make/deb/x64/*.deb"
 
-  build-windows:
+ build_windows:
     runs-on: windows-latest
-
     strategy:
       matrix:
         node-version: [19.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-
     steps:
       - uses: actions/checkout@v3
       - name: Use Node.js ${{ matrix.node-version }}
@@ -46,3 +40,8 @@ jobs:
       - run: npm ci
       - run: npm run make
       - run: pwd
+      - name: Publish
+        uses: actions/upload-artifact@v3
+        with:
+          name: webview-windows
+          path: "D:\\a\\webview\\webview\\out\\make\\squirrel.windows\\x64\\*.Setup"
