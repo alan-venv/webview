@@ -27,9 +27,11 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
-          name: ${{ matrix.os }}
-          path: "./**/*[.exe,.deb]"
           retention-days: 1
+          name: ${{ matrix.os }}
+          path: |
+            ./out/make/*/x64/*[.exe,.deb]
+            !./out/make/*/x64/*[.nupkg]
 
   publish_release:
     name: Publish to release
