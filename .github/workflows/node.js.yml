@@ -1,4 +1,4 @@
-name: webview CI/CD
+name: CI/CD
 
 on:
   push:
@@ -11,14 +11,15 @@ jobs:
     name: Build
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout sources
+        uses: actions/checkout@v3
       - name: Setup dotnet
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: "7"
       - name: Install dependencies
         run: dotnet tool install --global wix --version 4.0.0
-      - name: Setup Node
+      - name: Setup node.js
         uses: actions/setup-node@v3
         with:
           node-version: "20"
@@ -30,8 +31,8 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           retention-days: 1
-          name: windows
-          path: |
+          name: windows # Directory name
+          path: | # Files
             ./out/make/*/x64/*[.exe,.msi]
             !./out/make/*/x64/*[.nupkg]
 

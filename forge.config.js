@@ -30,6 +30,7 @@ module.exports = {
       name: "@electron-forge/maker-wix",
       platforms: ["win32"],
       config: {
+        icon: "./icon.ico",
         language: 1033,
         manufacturer: "My Awesome Company",
       },
